@@ -63,4 +63,10 @@ fun tokens[] : Node -> Token {
     ~at
 }
 
+assert terminates {
+    spec => eventually done
+}
+
+// check terminates for 3 but exactly 5 Node
+
 run { spec } for 3 but exactly 5 Node

@@ -54,8 +54,8 @@ pred move {
     Hare.at' = advance[advance[Hare.at]]
 
     Hare.at' = Tail implies Result' = NoCycle
-                    else Hare.at' = Tortoise.at' implies Result' = Cycle
-                                                 else Result' = Result
+                    else    Hare.at' = Tortoise.at' implies Result' = Cycle
+                                                    else    Result' = Result
 }
 
 // This is so the visualizer can show the tokens as attributes on the nodes

@@ -13,7 +13,7 @@ fact {
     no Tail.next
     Node in Head.*next
 
-    all n : Node | no n.next => n in Tail
+    all n : Node | no n.next => n = Tail
 }
 
 abstract sig Token {
@@ -22,13 +22,17 @@ abstract sig Token {
 
 one sig Tortoise, Hare extends Token {}
 
-fact init {
-    Token.at in Head
-    Result in Running
+
+pred spec {
+    always (
+        move or
+        done
+    )
 }
 
-fun advance[n : Node] : Node {
-    n in Tail implies n else n.next
+fact init {
+    Token.at in Head
+    Result = Running
 }
 
 pred done {
@@ -38,23 +42,23 @@ pred done {
     Result' = Result
 }
 
+
+fun advance[n : Node] : Node {
+    n = Tail implies n
+             else n.next
+}
+
 pred move {
-    Result in Running
+    Result = Running
     Tortoise.at' = advance[Tortoise.at]
     Hare.at' = advance[advance[Hare.at]]
 
     Hare.at' = Tail implies Result' = NoCycle
-                    else Hare.at' = Tortoise.at' implies Result'=Cycle
-                                                 else Result'=Result
+                    else Hare.at' = Tortoise.at' implies Result' = Cycle
+                                                 else Result' = Result
 }
 
-pred spec {
-    always (
-        move or
-        done
-    )
-}
-
+// This is so the visualizer can show the tokens as attributes on the nodes
 fun tokens[] : Node -> Token {
     ~at
 }

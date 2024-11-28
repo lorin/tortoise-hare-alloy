@@ -67,6 +67,6 @@ assert terminates {
     spec => eventually done
 }
 
-// check terminates for 3 but exactly 5 Node
+//check terminates for 3 but exactly 5 Node
 
-run { spec } for 3 but exactly 5 Node
+example: run { spec } for 3 but exactly 5 Node

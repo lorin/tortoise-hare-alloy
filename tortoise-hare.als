@@ -10,10 +10,9 @@ one sig Cycle, NoCycle, Running extends CycleStatus {}
 var one sig Result in CycleStatus {}
 
 fact {
-    no Tail.next
     Node in Head.*next
 
-    all n : Node | no n.next => n = Tail
+    all n : Node | no n.next <=> n = Tail
 }
 
 abstract sig Token {
@@ -44,15 +43,18 @@ pred done {
 
 
 fun advance[n : Node] : Node {
-    n = Tail implies n
-             else n.next
+    (n = Tail) implies n else n.next
 }
 
 pred move {
+    // enabling condition
     Result = Running
+
+    // advance the pointers
     Tortoise.at' = advance[Tortoise.at]
     Hare.at' = advance[advance[Hare.at]]
 
+    // update Result if the hare has reached the tail or tortoise and hare collided
     Hare.at' = Tail implies Result' = NoCycle
                     else    Hare.at' = Tortoise.at' implies Result' = Cycle
                                                     else    Result' = Result
@@ -67,6 +69,16 @@ assert terminates {
     spec => eventually done
 }
 
-//check terminates for 3 but exactly 5 Node
+pred has_cycle {
+    some n : Node | n in n.^next
+}
 
-example: run { spec } for 3 but exactly 5 Node
+assert correctness {
+     spec => (has_cycle <=> eventually Result=Cycle)
+}
+
+check terminates for exactly 5 Node
+
+check correctness for exactly 5 Node
+
+example: run { spec } for exactly 5 Node

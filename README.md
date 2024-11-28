@@ -2,6 +2,8 @@
 
 An implementation of Robert Floyd's cycle detection algorithm in Alloy 6.
 
+For more details, see my blog post: [The Tortoise and the Hare in Alloy](https://surfingcomplexity.blog/2024/11/27/the-tortoise-and-the-hare-in-alloy/)
+
 See also: [The Tortoise and the Hare in TLA+](https://github.com/lorin/tla-tortoise-hare)
 
 ## Example trace
